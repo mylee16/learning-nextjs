@@ -42,7 +42,7 @@ export default function LoginPage() {
 
         <button
             onClick={onLogin}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        className="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">
             Login here
         </button>
         <Link href="/signup">
