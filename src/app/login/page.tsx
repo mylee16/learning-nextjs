@@ -13,6 +13,7 @@ export default function LoginPage() {
         password: "",})
     const [buttonDisabled, setButtonDisabled] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
+    const [forgotPasswordStatus, setForgotPasswordStatus] = React.useState(false);
 
     const onLogin = async() => {
         try {
@@ -31,9 +32,27 @@ export default function LoginPage() {
         finally {
             setLoading(false);
         }
-
-
     }
+
+    const forgotPassword = async() => {
+        try {
+            setLoading(true);
+            const response = await axios.post("/api/users/forgotPasswordEmail", user);
+            console.log("Forgot password - Email sent", response.data);
+            toast.success("Forgot password - Email sent");
+            setForgotPasswordStatus(true);
+
+        }
+
+        catch (error:any) {
+            console.log("Login failed", error.message);
+            toast.error(error.message);
+        }
+        finally {
+            setLoading(false);
+        }
+    }
+
 
     useEffect(() => {
         if (user.email.length>0 && user.password.length > 0) {
@@ -70,11 +89,22 @@ export default function LoginPage() {
                 placeholder="password"
             />
 
+        <h1>{forgotPasswordStatus? "Forgot Password Email Sent, check your email": ""}</h1>
+
         <button
             onClick={onLogin}
         className="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">
             Login here
         </button>
+
+        <button
+            onClick={forgotPassword}
+        className="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">
+            Forgot password
+        </button>
+
+
+
         <Link href="/signup">
                 Visit Signup page
         </Link>

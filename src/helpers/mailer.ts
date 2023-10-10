@@ -5,7 +5,9 @@ import bcrypt from 'bcryptjs';
 
 export const sendEmail = async({email, emailType, userId}: any) => {
     try {
-        const hashedToken = await bcrypt.hash(userId.toString(), 10)
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const token = await bcrypt.hash(userId.toString(), 10);
+        const hashedToken = token.split('').filter(char => characters.includes(char)).join('');
 
         if (emailType == "VERIFY") {
             await User.findByIdAndUpdate(
