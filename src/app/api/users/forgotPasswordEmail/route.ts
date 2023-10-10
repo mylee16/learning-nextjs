@@ -1,7 +1,6 @@
 import {connect} from "@/dbConfig/dbConfig";
 import User from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
-import bcryptjs from "bcryptjs";
 import { sendEmail } from "@/helpers/mailer";
 
 
@@ -16,16 +15,16 @@ export async function POST(request: NextRequest) {
         // check if user already exists
         const user = await User.findOne({email})
         if (!user) {
-            return NextResponse.json({error: 'User does not exists!'}),
-            {status: 400}
+            return NextResponse.json({error: 'User does not exists!'},
+            {status: 400})
         }
 
         // send forgot password email
         await sendEmail({email, emailType: "RESET", userId: user._id})
 
-        return NextResponse.json({message: 'Forgot password email sent'})
+        return NextResponse.json({message: 'Forgot password email sent'}, {status: 200})
     
     } catch (error:any) {
-        return NextResponse.json({error: error.message}), {status: 500}
+        return NextResponse.json({error: error.message}, {status: 500})
     }
 }
